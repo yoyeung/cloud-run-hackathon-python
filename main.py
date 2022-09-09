@@ -37,8 +37,24 @@ def move():
     arena = data["arena"]
     dims = arena["dims"]
     state = arena["state"]
-    myselfData = state[myselfDomain]
-    state
+    me = state[myselfDomain]
+    del state[myselfDomain]
+    closest = {distance : 100}
+    for playerName in state:
+        x, y = state[playerName]
+        if me.x == x: # same row
+            if closest.distance > abs(me.y - y):
+                closest = { x: x, y: y, distance: abs(me.y - y)}
+        if me.y == y: # same column
+            if closest.distance > abs(me.x - x):
+                closest = { x: x, y: y, distance: abs(me.x - x)}
+             
+    if me.x < closest.x: # on my right hand
+    if me.x > closest.x # on my left hand
+    if me.y < closest.y #behind me
+    if me.y < closest.y # front of me
+    
+    
 #   next = ['L','R','F'][random.randrange(3)]
     logger.info(f'right now x:{myselfData["x"]}, y:{myselfData["y"]}, next:{next}')
 #     return next
