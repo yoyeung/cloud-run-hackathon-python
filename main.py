@@ -33,7 +33,7 @@ def index():
 def move():
     request.get_data()
     logger.info(request.json)
-    data = json.load(request.json)
+    data = json.loads(request.json)
     myselfDomain = data["_links"]["self"]
     arena = data["arena"]
     dims = arena["dims"]
