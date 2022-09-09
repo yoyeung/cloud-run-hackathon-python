@@ -16,7 +16,6 @@
 import os
 import logging
 import random
-import json
 from flask import Flask, request
 
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
@@ -33,7 +32,7 @@ def index():
 def move():
     request.get_data()
     logger.info(request.json)
-    data = json.loads(request.json)
+    data = request.json
     myselfDomain = data["_links"]["self"]
     arena = data["arena"]
     dims = arena["dims"]
