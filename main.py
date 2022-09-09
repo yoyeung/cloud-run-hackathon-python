@@ -39,8 +39,9 @@ def move():
     dims = arena["dims"]
     state = arena["state"]
     myselfData = state[myselfDomain]
-    log.info('right now', myselfData["x"], , myselfData["y"])
-    return 'L'
+    next = ['L','R','T'][random.randrange(3)]
+    logger.info('right now', myselfData["x"], , myselfData["y"], next)
+    return next
     # TODO add your implementation here to replace the random response
     
     # return moves[random.randrange(len(moves))]
