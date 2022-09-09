@@ -16,6 +16,7 @@
 import os
 import logging
 import random
+import json
 from flask import Flask, request
 
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
@@ -32,10 +33,17 @@ def index():
 def move():
     request.get_data()
     logger.info(request.json)
-    
+    data = json.load(request.json)
+    myselfDomain = data["_links"]["self"]
+    arena = data["arena"]
+    dims = arena["dims"]
+    state = arena["state"]
+    myselfData = state[myselfDomain]
+    log.info('right now', myselfData["x"], , myselfData["y"])
+    return ['L','R','T'][random.randrange(3)]
     # TODO add your implementation here to replace the random response
     
-    return moves[random.randrange(len(moves))]
+    # return moves[random.randrange(len(moves))]
 
 if __name__ == "__main__":
   app.run(debug=False,host='0.0.0.0',port=int(os.environ.get('PORT', 8080)))
