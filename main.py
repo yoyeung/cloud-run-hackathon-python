@@ -33,7 +33,7 @@ def move():
     request.get_data()
     logger.info(request.json)
     data = request.json
-    myselfDomain = data["_links"]["self"]
+    myselfDomain = data["_links"]["self"]["href"]
     arena = data["arena"]
     dims = arena["dims"]
     state = arena["state"]
