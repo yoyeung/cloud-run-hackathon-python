@@ -23,10 +23,43 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 moves = ['F', 'T', 'L', 'R']
+northSouth =['N','S']
+eastWest = ['E', 'W']
 
 @app.route("/", methods=['GET'])
 def index():
     return "Let the battle begin!"
+
+
+def checkDirection(meDirection, x = None, y = None ):
+    if meDirection == 'N':
+        if x > 0 or x < 0: # on E or W
+            return 1
+        if y > 0: # on S
+            return 2
+        else:
+            return 0
+    elif meDirection == 'S':
+        if x > 0 or x < 0: # on E or W
+            return 1
+        if y > 0: # on S
+            return 0
+        else:
+            return 2
+    elif meDirection == 'E':
+        if y > 0 or y < 0: # on N or S
+            return 1
+        if x > 0: # on E
+            return 0
+        else:
+            return 2
+    elif meDirection == 'W':
+        if y > 0 or y < 0: # on E or W
+            return 1
+        if x > 0: # on E
+            return 2
+        else:
+            return 0
 
 @app.route("/", methods=['POST'])
 def move():
@@ -39,24 +72,23 @@ def move():
     state = arena["state"]
     me = state[myselfDomain]
     del state[myselfDomain]
-    closest = {distance : 100}
+    closest = []
     for playerName in state:
         x, y = state[playerName]
         if me.x == x: # same row
-            if closest.distance > abs(me.y - y):
-                closest = { x: x, y: y, distance: abs(me.y - y)}
+            closest.append({ x: x, y: y, 'distance': abs(me.y - y) + checkDirection(me['direction'], y = (me.y - y))})
         if me.y == y: # same column
-            if closest.distance > abs(me.x - x):
-                closest = { x: x, y: y, distance: abs(me.x - x)}
+            closest.append({ x: x, y: y, 'distance': abs(me.x - x) + checkDirection(me['direction'], x = (me.x - x))})
              
-    if me.x < closest.x: # on my right hand
-    if me.x > closest.x # on my left hand
-    if me.y < closest.y #behind me
-    if me.y < closest.y # front of me
+    # if me.x < closest.x: # on my right hand
+    # if me.x > closest.x # on my left hand
+    # if me.y < closest.y #behind me
+    # if me.y < closest.y # front of me
+    logger.info(min(closest, key = lambda item : item['distance']))
     
     
 #   next = ['L','R','F'][random.randrange(3)]
-    logger.info(f'right now x:{myselfData["x"]}, y:{myselfData["y"]}, next:{next}')
+    # logger.info(f'right now x:{myselfData["x"]}, y:{myselfData["y"]}, next:{next}')
 #     return next
     # TODO add your implementation here to replace the random response
     
